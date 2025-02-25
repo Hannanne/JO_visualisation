@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/4.1.7/css/flag-icons.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrer par Sport</title>
+    <style>
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between; /* 让两栏均匀分布 */
+            /*align-items: center;  垂直居中 */
+            height: 70px;
+            
+        }
+        .left {
+            width: 50%;
+            float: left;
+            display: flex;
+            /*justify-content: space-between;  让两栏均匀分布 */
+            padding: 20px;
+            align-items: center; 
+            background-color: white;
+
+        }
+        
+        .right {
+            width: 50%;
+            float: left;
+            padding: 20px;
+            display: flex;
+            background-color: white;
+            align-items: center;
+        }
+        
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .row_detail {
+            display: flex;
+            justify-content: space-between; /* 左右对齐 */
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            height: 50px;
+            width:90%;
+            background-color: white;
+            align-items: center;
+        }
+        .left_detail, .right_detail{
+            width: 48%; /* 控制两栏宽度 */
+        }
+        .left_detail{
+            text-align: left;
+        }
+        .right_detail{
+            
+            background-color: white;
+            text-align: right;
+            padding-right:20px;
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        .medal-badge {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            color: white;
+            margin-right: 10px;
+        }
+        .gold { background-color: gold; }
+        .silver { background-color: silver; }
+        .bronze { background-color: #cd7f32; }
+
+        .quote-text::before {
+            content: "“"; /* 左双引号 */
+            font-size: 60px; /* 调整大小 */
+        }
+        .quote-text::after {
+            content: "”"; /* 右双引号 */
+            font-size: 60px; /* 调整大小 */
+        }
+        .quote-text {
+            display: inline; /* 确保不换行 */
+            font-size: 30px; /* 文字大小 */
+        }
+
+
+        
+    </style>     
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='Images/olympic_rings.png') }}" alt="Olympic Rings" class="logo">
+        </a>
+        <h1>Explorer les Sports Olympiques</h1>
+    </header>
+
+    <div style='background-color:white; height: 600px; width: 25%;display: flex;float: left;padding-top:100px;'>
+        <img src="/static/images/inconnu.svg" style="border-radius: 50%; height:20%;object-fit: cover; padding-left:100px;">
+    </div>
+
+    <div style='border-right: 1px solid #ddd;background-color:white; height: 600px; width: 50%;display: flex;float: left;flex-direction: column;'>
+        
+        <div style="background-color:white;height: 200px;width: 100%;">
+            <h1 style='padding-top:80px;padding-left:30px;font-size:48px;' >{{ athlete.name }}</h1>
+        </div>
+
+        
+        <div class="container">
+            <div class="left">
+                <img id="flag-img" src="" alt="国旗" width="60">
+                <span id="country-name" style='padding-left:20px;'>{{ athlete.country }}</span>
+            </div>
+            <div class="right">
+                <img id="discipline-img" src="" width="60">
+                <span id="disciplines" style='padding-left:20px;'>{{ athlete.disciplines }}</div>
+        </div>
+
+        
+        <div style="padding:40px;background-color:white;">
+            <h2 class="quote-text">{{ athlete.philosophy }}</h2>
+        </div>
+
+
+    </div>
+
+    <div style='text-align: center;align-items: center;background-color:white; height: 600px; width: 24%;display: flex;flex-direction: column;padding-top: 120px;'>
+        
+        <div class="row_detail">
+            <div class="left_detail">
+                Medals
+            </div>
+            <div class="right_detail">
+                {% for medal, count in medal_counts.items() %}
+                    <span class="medal-badge {% if 'Gold' in medal %}gold{% elif 'Silver' in medal %}silver{% elif 'Bronze' in medal %}bronze{% endif %}">
+                        {{ count }}
+                    </span>
+                {% endfor %}
+            </div>            
+        </div>
+
+
+        <div class="row_detail">
+            <div class="left_detail">
+                Game Participations
+            </div>
+            <div class="right_detail">
+                {{ nb_events }}
+            </div> 
+        </div>
+
+
+        <div class="row_detail">
+            <div class="left_detail">
+                Year of birth
+            </div>
+            <div class="right_detail">
+                {{ birth_year }}
+            </div> 
+        </div>
+
+
+        <div style="            display: flex;
+            justify-content: space-between; /* 左右对齐 */
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            
+            width:90%;
+            background-color: white;
+            align-items: center;">
+            <div class="left_detail">
+                events
+            </div>
+            <div style="background-color: white;
+                        text-align: right;
+                        padding-right:20px;
+                        " >
+                {% for event, count in medal_events.items() %}
+                    <p style="font-size:14px; color:#999;">{{ event }} </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取 HTML 里的国家名
+            let countryName = document.getElementById("country-name").innerText;
+
+            // API 获取国旗
+            fetch(`https://restcountries.com/v3.1/name/${countryName}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        let flagUrl = data[0].flags.png; // 获取 PNG 格式的国旗 URL
+                        document.getElementById("flag-img").src = flagUrl;
+                    }
+                })
+                .catch(error => console.error("获取国旗失败:", error));
+        });
+
+
+
+
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let disciplineName = document.getElementById("disciplines").innerText.trim();  // 获取文本并去除前后空格
+            let normalizedFileName = disciplineName.toLowerCase().replace(/ /g, "_");  // 转换为小写，并替换空格为下划线
+            let imgPath = `/static/images/icone_sport/${normalizedFileName}.png`;  // 构造图片路径
+        
+            // 设置图片
+            let imgElement = document.getElementById("discipline-img");
+            imgElement.src = imgPath;
+        
+            // 如果图片加载失败，则隐藏图片
+            imgElement.onerror = function () {
+                imgElement.style.display = "none";
+            };
+        });
+    </script>
+
+
+
+</body>
+</html>

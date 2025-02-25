@@ -1,0 +1,330 @@
+event;tag;sport;category;sport_code
+Duet;artistic-swimming;Artistic Swimming;Aquatic Sports;SWA
+Team;artistic-swimming;Artistic Swimming;Aquatic Sports;SWA
+Women's 3m Springboard;diving;Diving;Aquatic Sports;DIV
+Women's 10m Platform;diving;Diving;Aquatic Sports;DIV
+Women's Synchronised 3m Springboard;diving;Diving;Aquatic Sports;DIV
+Women's Synchronised 10m Platform;diving;Diving;Aquatic Sports;DIV
+Men's 3m Springboard;diving;Diving;Aquatic Sports;DIV
+Men's 10m Platform;diving;Diving;Aquatic Sports;DIV
+Men's Synchronised 3m Springboard;diving;Diving;Aquatic Sports;DIV
+Men's Synchronised 10m Platform;diving;Diving;Aquatic Sports;DIV
+Women's 10km;marathon-swimming;Marathon Swimming;Aquatic Sports;OWS
+Men's 10km;marathon-swimming;Marathon Swimming;Aquatic Sports;OWS
+Women's 50m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Women's 100m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Women's 200m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Women's 400m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Women's 800m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Women's 1500m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Women's 100m Backstroke;swimming;Swimming;Aquatic Sports;SWM
+Women's 200m Backstroke;swimming;Swimming;Aquatic Sports;SWM
+Women's 100m Breaststroke;swimming;Swimming;Aquatic Sports;SWM
+Women's 200m Breaststroke;swimming;Swimming;Aquatic Sports;SWM
+Women's 100m Butterfly;swimming;Swimming;Aquatic Sports;SWM
+Women's 200m Butterfly;swimming;Swimming;Aquatic Sports;SWM
+Women's 200m Individual Medley;swimming;Swimming;Aquatic Sports;SWM
+Women's 400m Individual Medley;swimming;Swimming;Aquatic Sports;SWM
+Women's 4 x 100m Freestyle Relay;swimming;Swimming;Aquatic Sports;SWM
+Women's 4 x 200m Freestyle Relay;swimming;Swimming;Aquatic Sports;SWM
+Women's 4 x 100m Medley Relay;swimming;Swimming;Aquatic Sports;SWM
+Men's 50m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Men's 100m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Men's 200m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Men's 400m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Men's 800m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Men's 1500m Freestyle;swimming;Swimming;Aquatic Sports;SWM
+Men's 100m Backstroke;swimming;Swimming;Aquatic Sports;SWM
+Men's 200m Backstroke;swimming;Swimming;Aquatic Sports;SWM
+Men's 100m Breaststroke;swimming;Swimming;Aquatic Sports;SWM
+Men's 200m Breaststroke;swimming;Swimming;Aquatic Sports;SWM
+Men's 100m Butterfly;swimming;Swimming;Aquatic Sports;SWM
+Men's 200m Butterfly;swimming;Swimming;Aquatic Sports;SWM
+Men's 200m Individual Medley;swimming;Swimming;Aquatic Sports;SWM
+Men's 400m Individual Medley;swimming;Swimming;Aquatic Sports;SWM
+Men's 4 x 100m Freestyle Relay;swimming;Swimming;Aquatic Sports;SWM
+Men's 4 x 200m Freestyle Relay;swimming;Swimming;Aquatic Sports;SWM
+Men's 4 x 100m Medley Relay;swimming;Swimming;Aquatic Sports;SWM
+Mixed 4 x 100m Medley Relay;swimming;Swimming;Aquatic Sports;SWM
+Men;water-polo;Water Polo;Aquatic Sports;WPO
+Women;water-polo;Water Polo;Aquatic Sports;WPO
+Men's 100m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 200m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 400m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 800m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 1500m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 5000m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 10;000m;athletics;Athletics & Endurance Sports;Athletics
+Men's Marathon;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 3000m Steeplechase;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 110m Hurdles;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 400m Hurdles;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's High Jump;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Pole Vault;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Long Jump;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Triple Jump;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Shot Put;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Discus Throw;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Hammer Throw;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Javelin Throw;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's Decathlon;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 20km Race Walk;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 4 x 100m Relay;athletics;Athletics;Athletics & Endurance Sports;ATH
+Men's 4 x 400m Relay;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 100m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 200m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 400m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 800m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 1500m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 5000m;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 10;000m;athletics;Athletics & Endurance Sports;Athletics
+Women's Marathon;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 3000m Steeplechase;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 100m Hurdles;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 400m Hurdles;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's High Jump;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Pole Vault;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Long Jump;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Triple Jump;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Shot Put;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Discus Throw;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Hammer Throw;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Javelin Throw;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Heptathlon;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 20km Race Walk;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 4 x 100m Relay;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's 4 x 400m Relay;athletics;Athletics;Athletics & Endurance Sports;ATH
+4 x 400m Relay Mixed;athletics;Athletics;Athletics & Endurance Sports;ATH
+Marathon Race Walk Relay Mixed;athletics;Athletics;Athletics & Endurance Sports;ATH
+Women's Individual;modern-pentathlon;Modern Pentathlon;Athletics & Endurance Sports;MPN
+Men's Individual;modern-pentathlon;Modern Pentathlon;Athletics & Endurance Sports;MPN
+Women's Individual;triathlon;Triathlon;Athletics & Endurance Sports;TRI
+Men's Individual;triathlon;Triathlon;Athletics & Endurance Sports;TRI
+Mixed Relay;triathlon;Triathlon;Athletics & Endurance Sports;TRI
+Women's Boulder & Lead;sport-climbing;Sport Climbing;Extreme & Urban Sports;CLB
+Women's Speed;sport-climbing;Sport Climbing;Extreme & Urban Sports;CLB
+Men's Boulder & Lead;sport-climbing;Sport Climbing;Extreme & Urban Sports;CLB
+Men's Speed;sport-climbing;Sport Climbing;Extreme & Urban Sports;CLB
+Men's 51kg;boxing;Boxing;Combat & Strength Sports;BOX
+Men's 57kg;boxing;Boxing;Combat & Strength Sports;BOX
+Men's 63.5kg;boxing;Boxing;Combat & Strength Sports;BOX
+Men's 71kg;boxing;Boxing;Combat & Strength Sports;BOX
+Men's 80kg;boxing;Boxing;Combat & Strength Sports;BOX
+Men's 92kg;boxing;Boxing;Combat & Strength Sports;BOX
+Men's +92kg;boxing;Boxing;Combat & Strength Sports;BOX
+Women's 50kg;boxing;Boxing;Combat & Strength Sports;BOX
+Women's 54kg;boxing;Boxing;Combat & Strength Sports;BOX
+Women's 57kg;boxing;Boxing;Combat & Strength Sports;BOX
+Women's 60kg;boxing;Boxing;Combat & Strength Sports;BOX
+Women's 66kg;boxing;Boxing;Combat & Strength Sports;BOX
+Women's 75kg;boxing;Boxing;Combat & Strength Sports;BOX
+Women's Épée Individual;fencing;Fencing;Combat & Strength Sports;FEN
+Women's Foil Individual;fencing;Fencing;Combat & Strength Sports;FEN
+Women's Sabre Individual;fencing;Fencing;Combat & Strength Sports;FEN
+Men's Épée Individual;fencing;Fencing;Combat & Strength Sports;FEN
+Men's Foil Individual;fencing;Fencing;Combat & Strength Sports;FEN
+Men's Sabre Individual;fencing;Fencing;Combat & Strength Sports;FEN
+Women's Épée Team;fencing;Fencing;Combat & Strength Sports;FEN
+Women's Foil Team;fencing;Fencing;Combat & Strength Sports;FEN
+Women's Sabre Team;fencing;Fencing;Combat & Strength Sports;FEN
+Men's Épée Team;fencing;Fencing;Combat & Strength Sports;FEN
+Men's Foil Team;fencing;Fencing;Combat & Strength Sports;FEN
+Men's Sabre Team;fencing;Fencing;Combat & Strength Sports;FEN
+Women -48 kg;judo;Judo;Combat & Strength Sports;JUD
+Women -52 kg;judo;Judo;Combat & Strength Sports;JUD
+Women -57 kg;judo;Judo;Combat & Strength Sports;JUD
+Women -63 kg;judo;Judo;Combat & Strength Sports;JUD
+Women -70 kg;judo;Judo;Combat & Strength Sports;JUD
+Women -78 kg;judo;Judo;Combat & Strength Sports;JUD
+Women +78 kg;judo;Judo;Combat & Strength Sports;JUD
+Men -60 kg;judo;Judo;Combat & Strength Sports;JUD
+Men -66 kg;judo;Judo;Combat & Strength Sports;JUD
+Men -73 kg;judo;Judo;Combat & Strength Sports;JUD
+Men -81 kg;judo;Judo;Combat & Strength Sports;JUD
+Men -90 kg;judo;Judo;Combat & Strength Sports;JUD
+Men -100 kg;judo;Judo;Combat & Strength Sports;JUD
+Men +100 kg;judo;Judo;Combat & Strength Sports;JUD
+Mixed Team;judo;Judo;Combat & Strength Sports;JUD
+Men -58kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Men -68kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Men -80kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Men +80kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Women -49kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Women -57kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Women -67kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Women +67kg;taekwondo;Taekwondo;Combat & Strength Sports;TKW
+Men's Greco-Roman 60kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Greco-Roman 67kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Greco-Roman 77kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Greco-Roman 87kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Greco-Roman 97kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Greco-Roman 130kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Women's Freestyle 50kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Women's Freestyle 53kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Women's Freestyle 57kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Women's Freestyle 62kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Women's Freestyle 68kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Women's Freestyle 76kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Freestyle 57kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Freestyle 65kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Freestyle 74kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Freestyle 86kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Freestyle 97kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Men's Freestyle 125kg;wrestling;Wrestling;Combat & Strength Sports;WRE
+Women's Park;cycling-bmx-freestyle;Cycling BMX Freestyle;Cycling Sports;BMF
+Men's Park;cycling-bmx-freestyle;Cycling BMX Freestyle;Cycling Sports;BMF
+Women;cycling-bmx-racing;Cycling BMX Racing;Cycling Sports;BMX
+Men;cycling-bmx-racing;Cycling BMX Racing;Cycling Sports;BMX
+Men's Cross-country;cycling-mountain-bike;Cycling Mountain Bike;Cycling Sports;MTB
+Women's Cross-country;cycling-mountain-bike;Cycling Mountain Bike;Cycling Sports;MTB
+Men's Road Race;cycling-road;Cycling Road;Cycling Sports;CRD
+Women's Road Race;cycling-road;Cycling Road;Cycling Sports;CRD
+Men's Individual Time Trial;cycling-road;Cycling Road;Cycling Sports;CRD
+Women's Individual Time Trial;cycling-road;Cycling Road;Cycling Sports;CRD
+Men's Team Sprint;cycling-track;Cycling Track;Cycling Sports;CTR
+Men's Sprint;cycling-track;Cycling Track;Cycling Sports;CTR
+Men's Keirin;cycling-track;Cycling Track;Cycling Sports;CTR
+Men's Team Pursuit;cycling-track;Cycling Track;Cycling Sports;CTR
+Men's Omnium;cycling-track;Cycling Track;Cycling Sports;CTR
+Men's Madison;cycling-track;Cycling Track;Cycling Sports;CTR
+Women's Team Sprint;cycling-track;Cycling Track;Cycling Sports;CTR
+Women's Sprint;cycling-track;Cycling Track;Cycling Sports;CTR
+Women's Keirin;cycling-track;Cycling Track;Cycling Sports;CTR
+Women's Team Pursuit;cycling-track;Cycling Track;Cycling Sports;CTR
+Women's Omnium;cycling-track;Cycling Track;Cycling Sports;CTR
+Women's Madison;cycling-track;Cycling Track;Cycling Sports;CTR
+Eventing Team;equestrian;Equestrian;Equestrian Sports;EQU
+Eventing Individual;equestrian;Equestrian;Equestrian Sports;EQU
+Dressage Team;equestrian;Equestrian;Equestrian Sports;EQU
+Dressage Individual;equestrian;Equestrian;Equestrian Sports;EQU
+Jumping Team;equestrian;Equestrian;Equestrian Sports;EQU
+Jumping Individual;equestrian;Equestrian;Equestrian Sports;EQU
+Men's Team;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Men's All-Around;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Men's Floor Exercise;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Men's Pommel Horse;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Men's Rings;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Men's Vault;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Men's Parallel Bars;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Men's Horizontal Bar;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Women's Team;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Women's All-Around;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Women's Vault;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Women's Uneven Bars;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Women's Balance Beam;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+Women's Floor Exercise;artistic-gymnastics;Artistic Gymnastics;Gymnastics & Acrobatic Sports;GAR
+B-Boys;breaking;Breaking;Gymnastics & Acrobatic Sports;BKG
+B-Girls;breaking;Breaking;Gymnastics & Acrobatic Sports;BKG
+Individual All-Around;rhythmic-gymnastics;Rhythmic Gymnastics;Gymnastics & Acrobatic Sports;GRY
+Group All-Around;rhythmic-gymnastics;Rhythmic Gymnastics;Gymnastics & Acrobatic Sports;GRY
+Men;trampoline-gymnastics;Trampoline Gymnastics;Gymnastics & Acrobatic Sports;GTR
+Women;trampoline-gymnastics;Trampoline Gymnastics;Gymnastics & Acrobatic Sports;GTR
+Men's Kayak Single;canoe-kayak-slalom;Canoe Slalom;Nautical Sports;CSL
+Women's Kayak Single;canoe-kayak-slalom;Canoe Slalom;Nautical Sports;CSL
+Men's Canoe Single;canoe-kayak-slalom;Canoe Slalom;Nautical Sports;CSL
+Women's Canoe Single;canoe-kayak-slalom;Canoe Slalom;Nautical Sports;CSL
+Men's Kayak Cross;canoe-kayak-slalom;Canoe Slalom;Nautical Sports;CSL
+Women's Kayak Cross;canoe-kayak-slalom;Canoe Slalom;Nautical Sports;CSL
+Men's Kayak Single 1000m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Men's Kayak Double 500m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Men's Kayak Four 500m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Men's Canoe Single 1000m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Men's Canoe Double 500m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Women's Kayak Single 500m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Women's Kayak Double 500m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Women's Kayak Four 500m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Women's Canoe Single 200m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Women's Canoe Double 500m;canoe-kayak-flatwater;Canoe Sprint;Nautical Sports;CSP
+Women's Pair;rowing;Rowing;Nautical Sports;ROW
+Men's Pair;rowing;Rowing;Nautical Sports;ROW
+Women's Double Sculls;rowing;Rowing;Nautical Sports;ROW
+Men's Double Sculls;rowing;Rowing;Nautical Sports;ROW
+Women's Four;rowing;Rowing;Nautical Sports;ROW
+Men's Four;rowing;Rowing;Nautical Sports;ROW
+Women's Single Sculls;rowing;Rowing;Nautical Sports;ROW
+Men's Single Sculls;rowing;Rowing;Nautical Sports;ROW
+Lightweight Women's Double Sculls;rowing;Rowing;Nautical Sports;ROW
+Lightweight Men's Double Sculls;rowing;Rowing;Nautical Sports;ROW
+Women's Quadruple Sculls;rowing;Rowing;Nautical Sports;ROW
+Men's Quadruple Sculls;rowing;Rowing;Nautical Sports;ROW
+Women's Eight;rowing;Rowing;Nautical Sports;ROW
+Men's Eight;rowing;Rowing;Nautical Sports;ROW
+Men's Windsurfing;sailing;Sailing;Nautical Sports;SAL
+Men's Kite;sailing;Sailing;Nautical Sports;SAL
+Men's Dinghy;sailing;Sailing;Nautical Sports;SAL
+Men's Skiff;sailing;Sailing;Nautical Sports;SAL
+Women's Windsurfing;sailing;Sailing;Nautical Sports;SAL
+Women's Kite;sailing;Sailing;Nautical Sports;SAL
+Women's Dinghy;sailing;Sailing;Nautical Sports;SAL
+Women's Skiff;sailing;Sailing;Nautical Sports;SAL
+Mixed Dinghy;sailing;Sailing;Nautical Sports;SAL
+Mixed Multihull;sailing;Sailing;Nautical Sports;SAL
+Men's Individual;archery;Archery;Precision & Shooting Sports;ARC
+Women's Individual;archery;Archery;Precision & Shooting Sports;ARC
+Men's Team;archery;Archery;Precision & Shooting Sports;ARC
+Women's Team;archery;Archery;Precision & Shooting Sports;ARC
+Mixed Team;archery;Archery;Precision & Shooting Sports;ARC
+Men's Individual Stroke Play;golf;Golf;Precision & Shooting Sports;GLF
+Women's Individual Stroke Play;golf;Golf;Precision & Shooting Sports;GLF
+10m Air Rifle Men;shooting;Shooting;Precision & Shooting Sports;SHO
+50m Rifle 3 Positions Men;shooting;Shooting;Precision & Shooting Sports;SHO
+10m Air Pistol Men;shooting;Shooting;Precision & Shooting Sports;SHO
+25m Rapid Fire Pistol Men;shooting;Shooting;Precision & Shooting Sports;SHO
+Trap Men;shooting;Shooting;Precision & Shooting Sports;SHO
+Skeet Men;shooting;Shooting;Precision & Shooting Sports;SHO
+10m Air Rifle Women;shooting;Shooting;Precision & Shooting Sports;SHO
+50m Rifle 3 Positions Women;shooting;Shooting;Precision & Shooting Sports;SHO
+10m Air Pistol Women;shooting;Shooting;Precision & Shooting Sports;SHO
+25m Pistol Women;shooting;Shooting;Precision & Shooting Sports;SHO
+Trap Women;shooting;Shooting;Precision & Shooting Sports;SHO
+Skeet Women;shooting;Shooting;Precision & Shooting Sports;SHO
+10m Air Rifle Mixed Team;shooting;Shooting;Precision & Shooting Sports;SHO
+10m Air Pistol Mixed Team;shooting;Shooting;Precision & Shooting Sports;SHO
+Skeet Mixed Team;shooting;Shooting;Precision & Shooting Sports;SHO
+Men's Singles;badminton;Badminton;Racket Sports;BDM
+Women's Singles;badminton;Badminton;Racket Sports;BDM
+Men's Doubles;badminton;Badminton;Racket Sports;BDM
+Women's Doubles;badminton;Badminton;Racket Sports;BDM
+Mixed Doubles;badminton;Badminton;Racket Sports;BDM
+Men's Singles;table-tennis;Table Tennis;Racket Sports;TTE
+Women's Singles;table-tennis;Table Tennis;Racket Sports;TTE
+Mixed Doubles;table-tennis;Table Tennis;Racket Sports;TTE
+Men's Team;table-tennis;Table Tennis;Racket Sports;TTE
+Women's Team;table-tennis;Table Tennis;Racket Sports;TTE
+Men's Singles;tennis;Tennis;Racket Sports;TEN
+Women's Singles;tennis;Tennis;Racket Sports;TEN
+Men's Doubles;tennis;Tennis;Racket Sports;TEN
+Women's Doubles;tennis;Tennis;Racket Sports;TEN
+Mixed Doubles;tennis;Tennis;Racket Sports;TEN
+Women's Street;skateboarding;Skateboarding;Extreme & Urban Sports;SKB
+Men's Street;skateboarding;Skateboarding;Extreme & Urban Sports;SKB
+Women's Park;skateboarding;Skateboarding;Extreme & Urban Sports;SKB
+Men's Park;skateboarding;Skateboarding;Extreme & Urban Sports;SKB
+Men;surfing;Surfing;Extreme & Urban Sports;SRF
+Women;surfing;Surfing;Extreme & Urban Sports;SRF
+Women's 49kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Women's 59kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Women's 71kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Women's 81kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Women's +81kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Men's 61kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Men's 73kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Men's 89kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Men's 102kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Men's +102kg;weightlifting;Weightlifting;Combat & Strength Sports;WLF
+Men;basketball;Basketball;Team Sports;BKB
+Women;basketball;Basketball;Team Sports;BKB
+Men;3x3-basketball;3x3 Basketball;Team Sports;BK3
+Women;3x3-basketball;3x3 Basketball;Team Sports;BK3
+Men;beach-volleyball;Beach Volleyball;Team Sports;VBV
+Women;beach-volleyball;Beach Volleyball;Team Sports;VBV
+Men;football;Football;Team Sports;FBL
+Women;football;Football;Team Sports;FBL
+Men;handball;Handball;Team Sports;HBL
+Women;handball;Handball;Team Sports;HBL
+Men;hockey;Hockey;Team Sports;HOC
+Women;hockey;Hockey;Team Sports;HOC
+Men;rugby-sevens;Rugby Sevens;Team Sports;RU7
+Women;rugby-sevens;Rugby Sevens;Team Sports;RU7
+Men;volleyball;Volleyball;Team Sports;VVO
+Women;volleyball;Volleyball;Team Sports;VVO

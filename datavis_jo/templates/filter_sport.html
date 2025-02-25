@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports des JO de Paris 2024</title>
+    <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f8f8;
+                margin: 0;
+            padding: 0;
+        }
+
+        /* Style de la bannière */
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ url_for("static", filename="images/paris2024-banner.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .header img.logo {
+            width: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            margin: 1rem 0 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        /* Style de la recherche */
+        .search-container {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #search-bar {
+            width: 400px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #selected-event {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Style des catégories */
+            .category-container {
+                width: 80%;
+            margin: 20px auto;
+                display: grid;
+            grid-template-columns: repeat(4, 1fr);
+                grid-gap: 15px;
+                padding: 20px;
+            max-height: 400px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                overflow: auto;
+            }
+
+            .category-card {
+                background-color: #ffffff;
+                padding: 10px;
+                border-radius: 15px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                min-height: 130px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+            width: auto;
+                transition: none;
+                overflow: visible;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            
+        .category-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            background-color: white;
+            border-radius: 15px;
+            z-index: 1;
+        }
+
+        .category-card > * {
+            position: relative;
+            z-index: 10;
+        }
+
+            .category-card h2 {
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 5px;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: ellipsis;
+            word-wrap: break-word;
+                text-align: center;
+            }
+
+        /* Style des listes de sports */
+            .sport-list {
+                margin: 0;
+                overflow: visible;
+                padding: 0;
+                list-style: none;
+            }
+
+            .sport-list li {
+                display: flex;
+                align-items: center;
+                margin-top: 5px;
+                font-size: 16px;
+                color: #555;
+                background-color: #f0f0f0;
+                padding: 10px;
+                border-radius: 8px;
+                transition: background-color 0.3s ease;
+            cursor: pointer;
+            }
+
+            .sport-list li:hover {
+                background-color: #e0e0e0;
+            }
+
+            .sport-list li img {
+                width: 30px;
+                height: 30px;
+                margin-right: 10px;
+            }
+
+        /* Style du menu des événements */
+        .event-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            min-width: 150px;
+            width: 500px;
+        }
+
+        .event-item {
+            width: 50%;
+            box-sizing: border-box;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .event-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Style du podium */
+        .podium-section {
+            display: none;
+            width: 80%;
+            margin: 20px auto;
+            padding: 2rem 3rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 255, 0.95)), url('{{ url_for("static", filename="images/podium.png") }}');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            perspective: 1200px;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .podium-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 255, 0.9));
+            border-radius: 20px;
+            z-index: 0;
+        }
+
+        .podium-title {
+            text-align: center;
+            color: #1e3799;
+            font-size: 2.6rem;
+            margin-bottom: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 400;
+            font-family: 'Playfair Display', 'Times New Roman', serif;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .podium-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #1e3799, transparent);
+        }
+
+        .podium-container {
+            position: relative;
+            height: 650px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0.5rem;
+        }
+
+        .podium-medals {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas: "silver gold bronze";
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 2rem;
+            z-index: 3;
+            margin-top: 70px;
+        }
+
+        .podium-medals .podium-1 {
+            grid-area: gold;
+            transform: translateY(-20px);
+        }
+
+        .podium-medals .podium-2 {
+            grid-area: silver;
+        }
+
+        .podium-medals .podium-3 {
+            grid-area: bronze;
+        }
+
+        .medal-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 3.2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .medal-icon.gold { 
+            background: linear-gradient(45deg, #FFD700, #FFC800);
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            animation: shine 2s infinite;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .medal-icon.silver { 
+            background: linear-gradient(45deg, #C0C0C0, #D5D5D5);
+            color: #fff;
+            text-shadow: 0 0 15px rgba(192, 192, 192, 0.6);
+            animation: shine 2s infinite 0.5s;
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.4);
+        }
+
+        .medal-icon.bronze { 
+            background: linear-gradient(45deg, #CD7F32, #E8935A);
+            color: #fff;
+            text-shadow: 0 0 15px rgba(205, 127, 50, 0.6);
+            animation: shine 2s infinite 1s;
+            box-shadow: 0 0 20px rgba(205, 127, 50, 0.4);
+        }
+
+        .medal-icon:hover {
+            transform: translateY(-5px) rotate(5deg);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes shine {
+            0% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
+            50% { text-shadow: 0 0 25px rgba(255, 255, 255, 0.8); }
+            100% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
+        }
+
+        .podium-names {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas: "silver gold bronze";
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 0;
+            z-index: 2;
+            margin-top: 40px;
+        }
+
+        .podium-names .podium-1 {
+            grid-area: gold;
+        }
+
+        .podium-names .podium-2 {
+            grid-area: silver;
+        }
+
+        .podium-names .podium-3 {
+            grid-area: bronze;
+        }
+
+        .podium-places {
+            margin-top: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas: "silver gold bronze";
+            gap: 15px;
+            align-items: flex-end;
+            justify-items: center;
+            height: 300px;
+            width: 100%;
+            background: url('{{ url_for("static", filename="images/podium.png") }}') center bottom / contain no-repeat;
+            z-index: 1;
+        }
+
+        .podium-places .podium-1 {
+            grid-area: gold;
+            height: 180px;
+        }
+
+        .podium-places .podium-2 {
+            grid-area: silver;
+            height: 140px;
+        }
+
+        .podium-places .podium-3 {
+            grid-area: bronze;
+            height: 100px;
+        }
+
+        .podium-block {
+            width: 120px;
+            height: 100%;
+            background: transparent;
+        }
+
+        .athlete-info {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            margin: 0 auto 1rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .athlete-name {
+            font-weight: 600;
+            color: #1e3799;
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .athlete-name:hover {
+            color: #4a69bd;
+            text-decoration: underline;
+        }
+
+        .athlete-country {
+            color: #444;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+            .show-more {
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
+            }
+
+            .show-more:hover {
+                color: darkblue;
+            }
+
+            .category-card.expanded {
+                overflow: visible;
+                width: var(--fixed-width, auto) !important;
+                min-width: var(--fixed-width, auto) !important;
+                max-width: var(--fixed-width, auto) !important;
+                position: absolute;
+                z-index: 20;
+                background-color: white;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+        .athletes-button {
+            margin-top: -2rem;
+            padding: 15px 30px;
+            background-color: #2024d6;
+            color: white;
+            text-decoration: none;
+                border-radius: 25px;
+                font-weight: bold;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            font-size: 1.1rem;
+        }
+
+        .athletes-button:hover {
+            background-color: #1518a0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+            }
+
+        .torch-button {
+            margin-left: 20px;
+            padding: 15px 30px;
+            background-color: #ff9d00;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .torch-button:hover {
+            background-color: #ff7b00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .torch-icon {
+            margin-right: 10px;
+            font-size: 1.4rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='images/paris2024-logo.png') }}" alt="Logo Paris 2024" class="logo">
+        <h1>Sports des JO de Paris 2024</h1>
+        <p>Découvrez tous les sports qui seront présents aux Jeux Olympiques</p>
+        <div>
+            <a href="{{ url_for('athletes_view') }}" class="athletes-button">Voir tous les athlètes en 3D</a>
+            <a href="{{ url_for('torch_route') }}" class="torch-button">
+                <span class="torch-icon">🔥</span>
+                Parcours de la Torche
+            </a>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Rechercher une catégorie..." oninput="filterCategories()">
+        <span id="selected-event"></span>
+    </div>
+
+    <div class="category-container">
+        {% for category, sports in first_three_sports.items() %}
+        <div class="category-card" id="card-{{ category }}" 
+            style="background-image: url('{{ url_for('static', filename='images/icone_category/' + category|replace(' ', '_')|lower + '.png') }}');">
+            
+            <div class="first-sports">
+                <h2>{{ category }}</h2>
+            </div>
+    
+            <ul class="sport-list">
+                {% for sport, data in sports.items() %}
+                    <li class="sport-item" data-sport="{{ sport }}">
+                        <img src="{{ url_for('static', filename='images/icone_sport/' + sport|replace(' ', '_')|lower + '.png') }}" alt="{{ sport }} icon">
+                        {{ sport }}
+                        <div class="event-menu">
+                            {% for event in data.events %}
+                                <div class="event-item" 
+                                     data-sport="{{ sport }}" 
+                                     data-event="{{ event }}">{{ event }}</div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+    
+            <ul class="sport-list hidden" id="all-sports-{{ category }}">
+                {% for sport, data in remaining_sports[category].items() %}
+                    <li class="sport-item" data-sport="{{ sport }}">
+                        <img src="{{ url_for('static', filename='images/icone_sport/' + sport|replace(' ', '_')|lower + '.png') }}" alt="{{ sport }} icon">
+                        {{ sport }}
+                        <div class="event-menu">
+                            {% for event in data.events %}
+                                <div class="event-item" 
+                                     data-sport="{{ sport }}" 
+                                     data-event="{{ event }}">{{ event }}</div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+    
+            {% if remaining_sports[category]|length > 0 %}
+                <span class="show-more" id="toggle-{{ category }}" onclick="toggleSports('{{ category }}')">↓</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="podium-section" id="podium">
+        <h2 class="podium-title">Les Médaillés Olympiques</h2>
+        <div class="podium-container">
+            <div class="podium-medals">
+                <div class="podium-place podium-2">
+                    <span class="medal-icon silver">🥈</span>
+                </div>
+                <div class="podium-place podium-1">
+                    <span class="medal-icon gold">🥇</span>
+                </div>
+                <div class="podium-place podium-3">
+                    <span class="medal-icon bronze">🥉</span>
+                </div>
+            </div>
+            <div class="podium-names">
+                <div class="podium-place podium-2">
+                    <div class="athlete-info">
+                        <div class="athlete-name" id="silver-name" onclick="window.location.href='/athlete_detail/' + encodeURIComponent(this.textContent)"></div>
+                        <div class="athlete-country" id="silver-country"></div>
+                    </div>
+                </div>
+                <div class="podium-place podium-1">
+                    <div class="athlete-info">
+                        <div class="athlete-name" id="gold-name" onclick="window.location.href='/athlete_detail/' + encodeURIComponent(this.textContent)"></div>
+                        <div class="athlete-country" id="gold-country"></div>
+                    </div>
+                </div>
+                <div class="podium-place podium-3">
+                    <div class="athlete-info">
+                        <div class="athlete-name" id="bronze-name" onclick="window.location.href='/athlete_detail/' + encodeURIComponent(this.textContent)"></div>
+                        <div class="athlete-country" id="bronze-country"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="podium-places">
+                <div class="podium-place podium-2">
+                    <div class="podium-block"></div>
+                </div>
+                <div class="podium-place podium-1">
+                    <div class="podium-block"></div>
+                </div>
+                <div class="podium-place podium-3">
+                    <div class="podium-block"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Fonction pour échapper les caractères spéciaux dans les chaînes JavaScript
+        function escapeString(str) {
+            return str.replace(/[&<>"']/g, function(match) {
+                const escape = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                };
+                return escape[match];
+            });
+        }
+
+        // Fonction pour afficher/cacher les sports supplémentaires
+        function toggleSports(category) {
+            const card = document.getElementById("card-" + category);
+            const extraSports = document.getElementById("all-sports-" + category);
+            const showMoreButton = document.getElementById("toggle-" + category);
+            const parent = card.parentElement;
+
+            if (extraSports.classList.contains("hidden")) {
+                const rect = card.getBoundingClientRect();
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+                card.style.setProperty("--fixed-width", rect.width + "px");
+
+                const placeholder = document.createElement("div");
+                placeholder.style.width = rect.width + "px";
+                placeholder.style.height = rect.height + "px";
+                placeholder.style.visibility = "hidden";
+                placeholder.classList.add("placeholder");
+                parent.insertBefore(placeholder, card);
+
+                card.style.position = "absolute";
+                card.style.left = rect.left + "px";
+                card.style.top = (rect.top + scrollTop) + "px";
+                card.style.width = rect.width + "px";
+                card.classList.add("expanded");
+
+                extraSports.classList.remove("hidden");
+                showMoreButton.textContent = "↑";
+            } else {
+                const placeholder = parent.querySelector(".placeholder");
+                if (placeholder) {
+                    placeholder.remove();
+                }
+
+                card.classList.remove("expanded");
+                card.style.position = "";
+                card.style.left = "";
+                card.style.top = "";
+                card.style.width = "";
+                card.style.setProperty("--fixed-width", "auto");
+
+                extraSports.classList.add("hidden");
+                showMoreButton.textContent = "↓";
+            }
+        }
+            
+        // Fonction pour filtrer les catégories
+       function filterCategories() {
+            const input = document.getElementById("search-bar").value.toLowerCase();
+            const cards = document.querySelectorAll(".category-card");
+
+    cards.forEach(card => {
+                const categoryNameElement = card.querySelector("h2");
+                const sports = card.querySelectorAll(".sport-item");
+                const categoryName = categoryNameElement.textContent;
+                const foundInCategory = categoryName.toLowerCase().includes(input);
+
+        function highlightMatch(text, query, color = false) {
+            if (!query) return text;
+                    const regex = new RegExp(`(${query})`, "gi");
+                    return text.replace(regex, color ? '<span style="color: #007bff;">$1</span>' : '<strong>$1</strong>');
+        }
+
+        categoryNameElement.innerHTML = foundInCategory ? highlightMatch(categoryName, input, true) : categoryName;
+                card.style.display = foundInCategory ? "block" : "none";
+
+        if (foundInCategory) {
+            sports.forEach(sport => sport.style.display = "flex");
+        }
+    });
+}
+
+        // Initialisation des gestionnaires d'événements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des clics sur les événements
+            document.querySelectorAll('.event-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const sport = this.getAttribute('data-sport');
+                    const event = this.getAttribute('data-event');
+                    if (sport && event) {
+                        selectEvent(sport, event);
+                    }
+                });
+            });
+
+            // Gestion des menus déroulants
+        document.querySelectorAll('.sport-item').forEach(item => {
+            const menu = item.querySelector('.event-menu');
+
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+
+                    // Fermer tous les autres menus
+                    document.querySelectorAll('.event-menu').forEach(m => {
+                        if (m !== menu) {
+                            m.style.display = 'none';
+                        }
+                    });
+
+                    if (menu) {
+                        if (menu.style.display === 'block' || menu.style.display === 'grid') {
+                            menu.style.display = 'none';
+                    } else {
+                            // Positionner et afficher le menu
+                            menu.style.position = 'absolute';
+                        menu.style.display = 'block';
+                        
+                            // Déplacer le menu dans le body pour éviter les problèmes de z-index
+                        document.body.appendChild(menu);
+                            
+                            // Positionner le menu à côté de l'élément cliqué
+                            const rect = item.getBoundingClientRect();
+                            menu.style.top = (rect.top + window.scrollY) + 'px';
+                            menu.style.left = (rect.right + window.scrollX) + 'px';
+                        menu.style.zIndex = '1000';
+
+                            // Appliquer le style de grille
+                            requestAnimationFrame(() => {
+                                menu.style.display = 'grid';
+                                menu.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                                menu.style.gap = '5px';
+                                menu.style.background = 'white';
+                                menu.style.padding = '10px';
+                                menu.style.border = '1px solid #ccc';
+                                menu.style.borderRadius = '8px';
+                                menu.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        function selectEvent(sport, event) {
+            try {
+                document.getElementById('selected-event').textContent = `Sport: ${sport}, Événement: ${event}`;
+                
+                const url = `/api/athletes/${encodeURIComponent(sport)}/${encodeURIComponent(event)}`;
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Erreur HTTP: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!Array.isArray(data)) {
+                            throw new Error('Format de données invalide');
+                        }
+                        
+                        document.querySelector('.podium-section').style.display = 'block';
+                        
+                        const positions = ['gold', 'silver', 'bronze'];
+                        const defaultAthlete = { name: 'À déterminer', country: '-', medal_type: '' };
+                        
+                        positions.forEach((position, index) => {
+                            const athlete = data[index] || defaultAthlete;
+                            document.getElementById(`${position}-name`).textContent = athlete.name;
+                            document.getElementById(`${position}-country`).textContent = athlete.country;
+                            
+                            const medalIcon = document.querySelector(`.podium-${index + 1} .medal-icon`);
+                            if (medalIcon) {
+                                medalIcon.classList.remove('gold', 'silver', 'bronze');
+                                const medalClass = athlete.medal_type ? athlete.medal_type.toLowerCase().split(' ')[0] : 'fourth';
+                                medalIcon.classList.add(medalClass);
+                            }
+                        });
+
+                        document.getElementById('podium').scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                        document.querySelector('.podium-section').style.display = 'none';
+                        alert(`Erreur: ${error.message}`);
+                    });
+
+                // Fermer le menu des événements
+                document.querySelectorAll('.event-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            } catch (error) {
+                console.error('Erreur inattendue:', error);
+                alert('Une erreur inattendue est survenue');
+            }
+        }
+
+        // Réinitialiser les cartes au scroll
+        document.querySelector(".category-container").addEventListener("scroll", function() {
+            const expandedCard = document.querySelector(".category-card.expanded");
+            if (expandedCard) {
+                const category = expandedCard.id.replace("card-", ""); 
+                toggleSports(category);
+            }
+        
+            document.querySelectorAll(".event-menu").forEach(eventMenu => {
+                eventMenu.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>

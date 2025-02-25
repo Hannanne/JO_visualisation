@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athlètes des JO de Paris 2024</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .scene-container {
+            width: 100vw;
+            height: calc(100vh - 80px);
+            position: relative;
+            background-color: #f0f0f0;
+        }
+
+        #scene {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-color: #f0f0f0;
+        }
+
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-button {
+            margin: 5px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #2024d6;
+            color: white;
+            cursor: pointer;
+        }
+
+        .header {
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #2024d6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #1518a0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Athlètes des JO de Paris 2024</h1>
+        <a href="{{ url_for('home') }}" class="back-button">Retour aux Sports</a>
+    </div>
+
+    <div class="scene-container">
+        <div id="scene"></div>
+        <div class="controls">
+            <button class="filter-button" data-filter="country">Par Pays</button>
+            <button class="filter-button" data-filter="sport">Par Sport</button>
+            <button class="filter-button" data-size="uniform">Taille uniforme</button>
+            <button class="filter-button" data-size="medals">Par médailles</button>
+            <button class="filter-button" data-size="age">Par âge</button>
+        </div>
+    </div>
+
+    <!-- Autres bibliothèques -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+
+    <!-- Script principal -->
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.8.2/dist/es-module-shims.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Variables globales
+        let scene, camera, renderer, controls;
+        let bubbles = [];
+        let athletes = [];
+        const WORLD_WIDTH = 1000;
+        const WORLD_HEIGHT = 500;
+        let time = 0;
+        let raycaster = new THREE.Raycaster();
+        let mouse = new THREE.Vector2();
+        let hoveredBubble = null;
+
+        // Fonction pour charger les données des athlètes
+        async function loadAthletes() {
+            try {
+                const response = await fetch('/api/athletes');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                athletes = await response.json();
+                console.log(`${athletes.length} athlètes chargés`);
+                return athletes;
+            } catch (error) {
+                console.error("Erreur lors du chargement des athlètes:", error);
+                return [];
+            }
+        }
+
+        // Fonction pour créer une bulle
+        function createBubble(athlete, index) {
+            const geometry = new THREE.SphereGeometry(20, 32, 32);
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0x4169E1,
+                transparent: true,
+                opacity: 0.6,
+                shininess: 100
+            });
+            const bubble = new THREE.Mesh(geometry, material);
+            
+            // Position en grille
+            const cols = Math.ceil(Math.sqrt(athletes.length));
+            const spacing = 50;
+            const startX = -(cols * spacing) / 2;
+            const startZ = startX;
+            
+            const col = index % cols;
+            const row = Math.floor(index / cols);
+            
+            bubble.position.set(
+                startX + col * spacing,
+                50 + Math.random() * 20,
+                startZ + row * spacing
+            );
+            
+            // Stockage des données de l'athlète
+            bubble.userData = {
+                athlete: athlete,
+                originalColor: material.color.getHex(),
+                originalPosition: bubble.position.clone(),
+                originalScale: bubble.scale.clone()
+            };
+            
+            return bubble;
+        }
+
+        // Gestionnaire d'événements de la souris
+        function onMouseMove(event) {
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(bubbles);
+
+            // Réinitialiser la bulle précédemment survolée
+            if (hoveredBubble) {
+                hoveredBubble.material.color.setHex(hoveredBubble.userData.originalColor);
+                hoveredBubble.scale.copy(hoveredBubble.userData.originalScale);
+            }
+
+            // Mettre en surbrillance la nouvelle bulle survolée
+            if (intersects.length > 0) {
+                hoveredBubble = intersects[0].object;
+                hoveredBubble.material.color.setHex(0xff0000);
+                hoveredBubble.scale.multiplyScalar(1.2);
+                
+                // Afficher les informations de l'athlète
+                const athlete = hoveredBubble.userData.athlete;
+                console.log(`Athlète: ${athlete.name}, Sport: ${athlete.sport}, Pays: ${athlete.country}`);
+            } else {
+                hoveredBubble = null;
+            }
+        }
+
+        // Fonction d'animation
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            time += 0.01;
+            
+            // Animation des bulles
+            bubbles.forEach(bubble => {
+                if (bubble !== hoveredBubble) {
+                    bubble.rotation.y += 0.01;
+                    bubble.position.y = Math.sin(time + bubble.position.x) * 5 + bubble.userData.originalPosition.y;
+                }
+            });
+            
+            if (controls) controls.update();
+            if (renderer && scene && camera) renderer.render(scene, camera);
+        }
+
+        // Fonction d'initialisation
+        async function init() {
+            console.log("Début de l'initialisation Three.js");
+
+            try {
+                const container = document.getElementById('scene');
+                if (!container) {
+                    throw new Error("Conteneur #scene non trouvé");
+                }
+
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0xf0f0f0);
+
+                camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 2000);
+                camera.position.set(200, 200, 500);
+                camera.lookAt(0, 0, 0);
+
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+
+                controls = new OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.screenSpacePanning = false;
+                controls.minDistance = 100;
+                controls.maxDistance = 1500;
+
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+                
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(1, 1, 1);
+                scene.add(directionalLight);
+
+                // Ajout d'une grille pour le debug
+                const gridHelper = new THREE.GridHelper(1000, 20);
+                scene.add(gridHelper);
+
+                // Ajout d'axes pour le debug
+                const axesHelper = new THREE.AxesHelper(500);
+                scene.add(axesHelper);
+
+                // Chargement des athlètes
+                const athletesData = await loadAthletes();
+                
+                // Création des bulles
+                athletesData.forEach((athlete, index) => {
+                    const bubble = createBubble(athlete, index);
+                    scene.add(bubble);
+                    bubbles.push(bubble);
+                });
+
+                // Ajout des événements
+                renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+                // Gestion des filtres
+                document.querySelectorAll('.filter-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const filterType = this.dataset.filter;
+                        const sizeType = this.dataset.size;
+                        
+                        if (filterType) {
+                            console.log(`Application du filtre: ${filterType}`);
+                            // TODO: Implémenter les filtres
+                        }
+                        
+                        if (sizeType) {
+                            console.log(`Application de la taille: ${sizeType}`);
+                            // TODO: Implémenter les tailles
+                        }
+                    });
+                });
+
+                animate();
+                console.log("Animation démarrée");
+
+            } catch (error) {
+                console.error("Erreur lors de l'initialisation:", error);
+                console.error("Stack trace:", error.stack);
+            }
+        }
+
+        window.addEventListener('resize', function() {
+            if (camera && renderer) {
+                const container = document.getElementById('scene');
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+        });
+
+        // Démarrage immédiat
+        init().catch(console.error);
+    </script>
+</body>
+</html> 
