@@ -60,9 +60,9 @@
         .stats-panel {
             position: fixed;
             right: -400px;
-            top: 60px;
+            top: 70px;
             width: 350px;
-            height: calc(100vh - 180px);
+            height: calc(100vh - 185px);
             background: white;
             box-shadow: -2px 0 10px rgba(0,0,0,0.1);
             transition: right 0.3s ease;
@@ -133,8 +133,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 120px;
-            padding: 1rem;
+            height: 105px;
+            padding: 0.5rem;
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
@@ -142,48 +142,56 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 4px;
         }
 
         .date-slider {
             width: 80%;
-            margin: 1rem 0;
+            margin: 0;
+            height: 4px;
         }
 
         .date-display {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             color: #333;
-            margin-bottom: 0.5rem;
+            margin: 0 0 -2px 0;
+            line-height: 1.2;
         }
 
         .slider-container {
             width: 80%;
             position: relative;
+            margin: 4px 0;
         }
 
         .timeline-marks {
             display: flex;
             justify-content: space-between;
-            margin-top: 5px;
-            font-size: 0.8rem;
+            margin-top: 2px;
+            font-size: 0.7rem;
             color: #666;
         }
 
         .stage-info {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             color: #1e3799;
-            margin-top: 0.5rem;
+            margin: 0 0 -2px 0;
+            line-height: 1.2;
         }
 
         .play-button {
-            padding: 8px 16px;
+            padding: 4px 12px;
             background-color: #ff9d00;
             color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 15px;
             cursor: pointer;
-            margin-top: 10px;
+            margin: 0;
+            font-size: 0.9rem;
             font-weight: bold;
             transition: all 0.3s ease;
+            height: 24px;
+            line-height: 1;
         }
 
         .play-button:hover {
@@ -202,6 +210,47 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
             z-index: 1000;
         }
+
+        .venue-toggle {
+            position: fixed;
+            left: 20px;
+            top: 80px;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            padding: 8px;
+        }
+
+        .venue-toggle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .venue-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .venue-toggle.active {
+            background: #ff9d00;
+        }
+
+        .olympic-icon {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            padding: 2px;
+        }
+        .olympic-icon:hover {
+            transform: scale(1.2);
+            transition: transform 0.2s;
+        }
     </style>
 </head>
 <body>
@@ -211,6 +260,10 @@
         <h1>Parcours de la Torche Olympique</h1>
         <a href="{{ url_for('home') }}" class="back-button">Retour à l'accueil</a>
     </div>
+
+    <button class="venue-toggle" id="venueToggle" title="Afficher les lieux de compétition">
+        <img src="{{ url_for('static', filename='images/icone_stade.png') }}" alt="Stade">
+    </button>
 
     <div id="map"></div>
 
@@ -255,47 +308,39 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        const routeData = {{ route_data|tojson|safe }};
+        // Création de l'icône personnalisée pour les sites olympiques
+        const olympicIcon = L.divIcon({
+            className: 'olympic-icon',
+            html: `
+                <svg width="24" height="24" viewBox="0 0 60 60">
+                    <circle cx="15" cy="15" r="6" stroke="blue" stroke-width="2" fill="none"/>
+                    <circle cx="30" cy="15" r="6" stroke="black" stroke-width="2" fill="none"/>
+                    <circle cx="45" cy="15" r="6" stroke="red" stroke-width="2" fill="none"/>
+                    <circle cx="22.5" cy="25" r="6" stroke="yellow" stroke-width="2" fill="none"/>
+                    <circle cx="37.5" cy="25" r="6" stroke="green" stroke-width="2" fill="none"/>
+                </svg>
+            `,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12],
+            popupAnchor: [0, -12]
+        });
+
+        // Initialisation des variables globales
+        const routeData = JSON.parse('{{ route_data|tojson|safe }}');
+        const venuesData = JSON.parse('{{ venues|tojson|safe }}');
         let polyline = null;
         let markers = [];
+        let venueMarkers = [];
         let isPlaying = false;
         let animationInterval;
         let cityCoordinates = new Map();
+        let venuesVisible = false;
 
-        // Fonction pour obtenir les coordonnées d'une ville
-        async function getCityCoordinates(city) {
-            if (cityCoordinates.has(city)) {
-                return cityCoordinates.get(city);
-            }
+        // Initialisation
+        initializeTimelineMarks();
+        calculateStats();
+        updateMap(0);
 
-            try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)},France`);
-                const data = await response.json();
-                
-                if (data && data.length > 0) {
-                    const coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-                    cityCoordinates.set(city, coords);
-                    return coords;
-                }
-                console.error(`Coordonnées non trouvées pour ${city}`);
-                return null;
-            } catch (error) {
-                console.error(`Erreur lors de la recherche des coordonnées pour ${city}:`, error);
-                return null;
-            }
-        }
-
-        // Fonction pour formater la date
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('fr-FR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-        }
-
-        // Initialiser les marques temporelles
         function initializeTimelineMarks() {
             const timelineMarks = document.getElementById('timelineMarks');
             const numMarks = 5;
@@ -311,9 +356,16 @@
             }
         }
 
-        // Fonction pour calculer les statistiques
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
         function calculateStats() {
-            // Calculer la durée totale
             const startDate = new Date(routeData[0].date_start);
             const endDate = new Date(routeData[routeData.length - 1].date_end);
             const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
@@ -322,7 +374,6 @@
             document.getElementById('totalStages').textContent = routeData.length;
         }
 
-        // Mettre à jour les statistiques de l'étape actuelle
         function updateStageStats(index) {
             const currentStage = routeData[index];
             const stageStart = new Date(currentStage.date_start);
@@ -337,7 +388,6 @@
             document.getElementById('progressPercentage').textContent = `${progress}%`;
         }
 
-        // Fonction pour mettre à jour la carte
         async function updateMap(index) {
             document.getElementById('loading').style.display = 'block';
             updateStageStats(index);
@@ -364,12 +414,13 @@
                     opacity: 0.8
                 }).addTo(map);
 
-                // Ajouter le marqueur pour la position actuelle
                 const currentPoint = routeData[index];
                 const currentCoords = await getCityCoordinates(currentPoint.city);
                 
                 if (currentCoords) {
-                    const marker = L.marker(currentCoords)
+                    const marker = L.marker(currentCoords, {
+                        icon: olympicIcon
+                    })
                         .bindPopup(`
                             <b>${currentPoint.title}</b><br>
                             <b>Ville:</b> ${currentPoint.city}<br>
@@ -382,7 +433,6 @@
                 }
             }
 
-            // Mettre à jour les informations
             const currentPoint = routeData[index];
             document.getElementById('currentDate').textContent = 
                 `Du ${formatDate(currentPoint.date_start)} au ${formatDate(currentPoint.date_end)}`;
@@ -392,7 +442,28 @@
             document.getElementById('loading').style.display = 'none';
         }
 
-        // Gestion de l'animation
+        async function getCityCoordinates(city) {
+            if (cityCoordinates.has(city)) {
+                return cityCoordinates.get(city);
+            }
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)},France`);
+                const data = await response.json();
+                
+                if (data && data.length > 0) {
+                    const coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+                    cityCoordinates.set(city, coords);
+                    return coords;
+                }
+                console.error(`Coordonnées non trouvées pour ${city}`);
+                return null;
+            } catch (error) {
+                console.error(`Erreur lors de la recherche des coordonnées pour ${city}:`, error);
+                return null;
+            }
+        }
+
         function togglePlay() {
             const playButton = document.getElementById('playButton');
             if (isPlaying) {
@@ -413,7 +484,6 @@
             isPlaying = !isPlaying;
         }
 
-        // Configuration des contrôles
         const slider = document.getElementById('dateSlider');
         slider.max = routeData.length - 1;
         slider.value = 0;
@@ -424,7 +494,6 @@
 
         document.getElementById('playButton').addEventListener('click', togglePlay);
 
-        // Gestion du panneau de statistiques
         document.getElementById('statsToggle').addEventListener('click', function() {
             const panel = document.getElementById('statsPanel');
             const button = document.getElementById('statsToggle');
@@ -432,10 +501,98 @@
             button.textContent = panel.classList.contains('visible') ? '−' : '+';
         });
 
-        // Initialisation
-        initializeTimelineMarks();
-        calculateStats();
-        updateMap(0);
+        async function toggleVenues() {
+            const button = document.getElementById('venueToggle');
+            venuesVisible = !venuesVisible;
+            button.classList.toggle('active');
+
+            if (venuesVisible) {
+                map.setView([48.8566, 2.3522], 11);
+                
+                // Nettoyer les marqueurs existants
+                venueMarkers.forEach(marker => map.removeLayer(marker));
+                venueMarkers = [];
+                
+                // Coordonnées des lieux de compétition
+                const venueCoordinates = {
+                    'Aquatics Centre': [48.9386, 2.3482],
+                    'Bercy Arena': [48.8387, 2.3786],
+                    'Bordeaux Stadium': [44.8974, -0.5614],
+                    'Champ de Mars Arena': [48.8556, 2.2986],
+                    'Château de Versailles': [48.8048, 2.1203],
+                    'Chateauroux Shooting Centre': [46.8134, 1.6990],
+                    'Eiffel Tower Stadium': [48.8584, 2.2945],
+                    'Elancourt Hill': [48.7720, 1.9644],
+                    'Geoffroy-Guichard Stadium': [45.4609, 4.3900],
+                    'Grand Palais': [48.8661, 2.3125],
+                    'Hôtel de Ville': [48.8566, 2.3522],
+                    'Invalides': [48.8584, 2.3134],
+                    'La Beaujoire Stadium': [47.2559, -1.5252],
+                    'La Concorde': [48.8656, 2.3212],
+                    'Le Bourget Sport Climbing Venue': [48.9321, 2.4273],
+                    'Golf National': [48.7547, 2.0877],
+                    'Lyon Stadium': [45.7653, 4.9822],
+                    'Marseille Marina': [43.2965, 5.3698],
+                    'Marseille Stadium': [43.2696, 5.3960],
+                    'Nice Stadium': [43.7051, 7.1929],
+                    'North Paris Arena': [48.9351, 2.3718],
+                    'Parc des Princes': [48.8414, 2.2530],
+                    'Paris La Defense Arena': [48.8918, 2.2308],
+                    'Pierre Mauroy Stadium': [50.6119, 3.1302],
+                    'Pont Alexandre III': [48.8637, 2.3137],
+                    'Porte de La Chapelle Arena': [48.8991, 2.3637],
+                    'Stade Roland-Garros': [48.8474, 2.2533],
+                    'Saint-Quentin-en-Yvelines BMX Stadium': [48.7902, 2.0150],
+                    'Saint-Quentin-en-Yvelines Velodrome': [48.7902, 2.0150],
+                    'South Paris Arena': [48.8139, 2.3784],
+                    'Stade de France': [48.9245, 2.3602],
+                    'Teahupo\'o, Tahiti': [-17.8453, -149.2663],
+                    'Trocadéro': [48.8619, 2.2885],
+                    'Vaires-sur-Marne Nautical Stadium': [48.8566, 2.6486],
+                    'Yves-du-Manoir Stadium': [48.9274, 2.2513]
+                };
+                
+                // Ajouter les marqueurs pour chaque lieu
+                for (const venue of venuesData) {
+                    console.log('Traitement du lieu:', venue); // Debug
+                    const coords = venueCoordinates[venue.name];
+                    if (coords) {
+                        // Traiter les sports qui peuvent être une chaîne simple
+                        let sports = venue.sports;
+                        if (typeof sports === 'string' && sports.includes(',')) {
+                            sports = sports.split(',').map(s => s.trim());
+                        } else if (typeof sports === 'string') {
+                            sports = [sports];
+                        }
+
+                        const marker = L.marker(coords, {
+                            icon: olympicIcon
+                        })
+                            .bindPopup(`
+                                <b>${venue.name}</b><br>
+                                <b>Sports:</b> ${Array.isArray(sports) ? sports.join(', ') : sports}<br>
+                                <b>Dates:</b> ${formatDate(venue.date_start)} - ${formatDate(venue.date_end)}<br>
+                                <a href="${venue.url}" target="_blank">Plus d'informations</a>
+                            `)
+                            .addTo(map);
+                        venueMarkers.push(marker);
+                    } else {
+                        console.warn('Coordonnées non trouvées pour:', venue.name); // Debug
+                    }
+                }
+            } else {
+                venueMarkers.forEach(marker => map.removeLayer(marker));
+                venueMarkers = [];
+                
+                if (polyline) {
+                    map.fitBounds(polyline.getBounds());
+                } else {
+                    map.setView([46.603354, 1.888334], 6);
+                }
+            }
+        }
+
+        document.getElementById('venueToggle').addEventListener('click', toggleVenues);
     </script>
 </body>
 </html> 

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify
 import pandas as pd
 import os
+import csv
 
 app = Flask(__name__)
 
@@ -109,8 +110,16 @@ def home():
 
     return render_template("filter_sport.html", first_three_sports=first_three_sports, remaining_sports=remaining_sports)
 
-@app.route("/athletes-view")
-def athletes_view():
+@app.route('/athletes')
+@app.route('/athletes/<view>')
+def athletes_view(view=None):
+    if view == 'list':
+        print("Vue liste demandée")
+        athletes_data = get_athletes()
+        print(f"Nombre d'athlètes chargés : {len(athletes_data)}")
+        if len(athletes_data) > 0:
+            print("Premier athlète :", athletes_data[0])
+        return render_template("athletes_list.html", athletes=athletes_data)
     return render_template("athletes.html")
 
 @app.route("/api/athletes")
@@ -241,19 +250,87 @@ def athlete_detail(athlete_name):
 
 @app.route("/torch-route")
 def torch_route():
+    route_data = []
+    venues_data = []
+    
     try:
         # Charger les données du parcours de la torche
-        torch_data = pd.read_csv("static/data/torch_route.csv")
-        
-        # Convertir les données en format JSON pour le template
-        route_data = torch_data.to_dict(orient='records')
-        
-        return render_template("torch_route.html", route_data=route_data)
-    except FileNotFoundError:
-        return "Données du parcours de la torche non disponibles", 404
+        with open('static/data/torch_route.csv', 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                route_data.append(row)
+                
+        # Charger les données des lieux de compétition
+        with open('static/data/venues.csv', 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                # Adapter le format des données pour correspondre à ce qu'attend le template
+                sports_list = eval(row['sports']) if isinstance(row['sports'], str) else row['sports']
+                sports_str = ", ".join(sports_list) if isinstance(sports_list, list) else str(sports_list)
+                
+                venues_data.append({
+                    'name': row['venue'],
+                    'sports': sports_str,
+                    'url': row['url'],
+                    'date_start': row['date_start'],
+                    'date_end': row['date_end']
+                })
+                
+        return render_template("torch_route.html", route_data=route_data, venues=venues_data)
+                
+    except FileNotFoundError as e:
+        print(f"Erreur : fichier non trouvé - {e}")
+        return "Données non disponibles", 404
     except Exception as e:
-        print(f"Erreur lors du chargement des données de la torche : {str(e)}")
+        print(f"Erreur lors du chargement des données : {e}")
         return "Une erreur est survenue", 500
+
+def get_athletes():
+    try:
+        print("Début du chargement des athlètes...")
+        # Charger les données depuis le fichier CSV
+        df = pd.read_csv("static/data/athletes.csv")
+        print(f"CSV chargé avec {len(df)} lignes")
+        print(f"Colonnes disponibles : {df.columns.tolist()}")
+        
+        # Sélectionner et formater les colonnes nécessaires
+        athletes = []
+        for _, row in df.iterrows():
+            try:
+                # Utiliser les colonnes appropriées
+                name_parts = row['name'].split(' ', 1)
+                first_name = name_parts[0] if len(name_parts) > 0 else ""
+                last_name = name_parts[1] if len(name_parts) > 1 else ""
+                
+                # Nettoyer et extraire le premier sport de la liste des disciplines
+                disciplines = eval(row['disciplines']) if isinstance(row['disciplines'], str) and row['disciplines'].strip() else []
+                sport = disciplines[0] if disciplines else "Sport inconnu"
+                
+                athlete_data = {
+                    'id': row['name'],  # Utiliser le nom comme ID pour le lien vers la page de détail
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'sport': sport,
+                    'country': row['country'] if pd.notna(row['country']) else "Pays inconnu"
+                }
+                athletes.append(athlete_data)
+                
+                if len(athletes) == 1:  # Afficher le premier athlète pour vérification
+                    print("Premier athlète traité :", athlete_data)
+                    
+            except Exception as row_error:
+                print(f"Erreur lors du traitement d'une ligne : {str(row_error)}")
+                continue
+        
+        print(f"Nombre total d'athlètes traités : {len(athletes)}")
+        return athletes
+        
+    except Exception as e:
+        print(f"Erreur lors du chargement des athlètes: {str(e)}")
+        print("Type d'erreur:", type(e))
+        import traceback
+        print("Traceback:", traceback.format_exc())
+        return []
 
 if __name__ == "__main__":
     app.run(debug=True)
